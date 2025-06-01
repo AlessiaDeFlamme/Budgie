@@ -90,16 +90,16 @@
     <iframe id="budContent" src="home.html"></iframe>
 
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js';
-        import { getFirestore, doc, getDoc, deleteDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { getFirestore, doc, getDoc, deleteDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 
         const firebaseConfig = {
-            apiKey: "AIzaSyBafl7cXT6baoBcmlnU0QWMtcapOEkCxeM",
-            authDomain: "otp-gen-4b5da.firebaseapp.com",
-            projectId: "otp-gen-4b5da",
-            storageBucket: "otp-gen-4b5da.firebasestorage.app",
-            messagingSenderId: "921555172756",
-            appId: "1:921555172756:web:ad15f3e2ebb8fc67e6a381"
+            apiKey: "AIzaSyDPeNlcSpTe2oOySKcdfh9ykQzHVTDSwzk",
+            authDomain: "otp-gen-4d684.firebaseapp.com",
+            projectId: "otp-gen-4d684",
+            storageBucket: "otp-gen-4d684.firebasestorage.app",
+            messagingSenderId: "1092826485280",
+            appId: "1:1092826485280:web:1a2b5b38f002a793246245"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -186,9 +186,8 @@
                                 document.getElementById('otpModal').style.display = 'none';
                                 document.getElementById('budContent').style.display = 'block';
                                 
-                                // Store access token in session (expires when browser closes)
-                                sessionStorage.setItem('budgetAccess', 'granted');
-                                sessionStorage.setItem('accessTime', now.toString());
+                                // Store access token in localStorage (permanent access)
+                                localStorage.setItem('budgetAccess', 'granted');
                                 
                             } catch (deleteError) {
                                 console.error('Error deleting used OTP:', deleteError);
@@ -237,22 +236,11 @@
 
         // Check if already authenticated (page refresh handling)
         window.addEventListener('load', function() {
-            const accessGranted = sessionStorage.getItem('budgetAccess');
-            const accessTime = sessionStorage.getItem('accessTime');
+            const accessGranted = localStorage.getItem('budgetAccess');
             
-            if (accessGranted === 'granted' && accessTime) {
-                const now = new Date().getTime();
-                const timeDiff = now - parseInt(accessTime);
-                
-                // Session expires after 1 hour
-                if (timeDiff < 3600000) {
-                    document.getElementById('otpModal').style.display = 'none';
-                    document.getElementById('budContent').style.display = 'block';
-                } else {
-                    // Clear expired session
-                    sessionStorage.removeItem('budgetAccess');
-                    sessionStorage.removeItem('accessTime');
-                }
+            if (accessGranted === 'granted') {
+                document.getElementById('otpModal').style.display = 'none';
+                document.getElementById('budContent').style.display = 'block';
             }
         });
 
